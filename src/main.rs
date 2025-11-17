@@ -1,12 +1,13 @@
 use std::env;
 
+//define a lists type
 struct Lists {
     list: Vec<char>,
     shifted_list: Vec<char>,
     output_list: String,
 }
 
-//instatiate a Lists struct
+//give Lists the 'new' method
 impl Lists {
     fn new() -> Lists {
         let lists: Lists = Lists { 
@@ -32,6 +33,7 @@ struct Config {
     message: String,
 }
 
+//function for collecting program args on launch
 impl Config {
     fn parse_config() -> Config {
         let args: Vec<String> = env::args().collect();
