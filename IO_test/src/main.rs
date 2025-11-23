@@ -8,14 +8,31 @@ use std::env;
  * the program, not for cargo itself.
  ********************************************************************/
 
+//type defined for expected command line args
+#[derive(Debug)]
+struct ArgsFormat {
+    args: String,
+}
+
+//instantiate a struct populated with the command line arguments
+fn build_args(mut args: Vec<String>) -> ArgsFormat {
+    ArgsFormat {
+        args: args.remove(0),
+    }
+}
+
 fn main() {
 
-
-    //collect args
-    //args() returns an iterator and .collect turns an interator into
-    //a collection
-    let args: Vec<String> = env::args().collect();
+    /***************************************************************
+     * Collect Args
+     * -------------------------------------------
+     * args() returns an iterator and .collect turns an interator into
+     * a collection 
+     *****************************************************************/
+    //try passing ownership here
+    let args: ArgsFormat = build_args(env::args().collect());
     dbg!(args);
+
 }
 
 
