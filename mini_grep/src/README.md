@@ -34,19 +34,21 @@ Case 1: indexing vectors
 
         //type defined for expected command line args
         #[derive(Debug)]
-        struct ArgsFormat {
-            args: String,
+        struct ArgsFormatter {
+            filename: String,
+            expression: String,
         }
 
         //instantiate a struct populated with the command line arguments
         fn build_args(mut args: Vec<String>) -> ArgsFormat {
-            ArgsFormat {
-                args: args.remove(0),
+            ArgsFormatter {
+                filename: args.remove(1),
+                expression:args.remove(2),
             }
         }
 
         fn main() {
-            let args: ArgsFormat = build_args(env::args().collect());
+            let args: ArgsFormatter = build_args(env::args().collect());
             dbg!(args);
         }
 
