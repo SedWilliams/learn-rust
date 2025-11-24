@@ -1,5 +1,6 @@
 use std::env;
 use std::fs;
+use std::process;
 
 //TODO update readme about what is held at the 0th index of args vector (its debug info)
 //TODO implement tuple struct instead
@@ -21,13 +22,20 @@ struct ArgsFormatter {
 
 //instantiate a struct populated with the command line arguments
 impl ArgsFormatter {
-    fn build_args(mut args: Vec<String>) -> ArgsFormatter {
-        ArgsFormatter {
-            //these are both one because the 0th index is the program name
-            //and when the previous arg is removed the next arg shifts to the previous index
-            filename: args.remove(1),
-            expression: args.remove(1),
+    fn build_args(mut args: Vec<String>) -> Result<ArgsFormatter, &'static str> {
+    
+        if args.len() < 3 {
+            return Err("not enough arguments");
         }
+        
+        Ok(
+            ArgsFormatter {
+                //these are both one because the 0th index is the program name
+                //and when the previous arg is removed the next arg shifts to the previous index
+                filename: args.remove(1),
+                expression: args.remove(1),
+            }
+        )
     }
 }
 
@@ -39,26 +47,53 @@ fn main() {
      * args() returns an iterator and .collect turns an interator into
      * a collection 
      *****************************************************************/
-    //returns a collection that will be mutated later which is why the function above accepts it as
-    //mut
-    let args: ArgsFormatter = ArgsFormatter::build_args(env::args().collect());
-    //dbg!(args.filename);
-    //dbg!(args.expression);
+    let args: ArgsFormatter = ArgsFormatter::build_args(env::args().collect()).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {err}");
+        process::exit(1);
+    });
+
+    println!("Reading from file: {}", &args.filename);
+    println!("Searching for expression: {}", &args.expression);
+
+    if let Err(e) = run(&args) {
+        println!("Application error: {e} ");
+        process::exit(1);
+    }
+
+}
+
+
+pub fn run(args: &ArgsFormatter) -> Result<(), Box<dyn Error>> {
     
-    let file_name = &args.filename;
-    let expression = &args.expression;
-
-    println!("Reading from file: {}", &file_name);
-    println!("Searching for expression: {}", &expression);
-
     /***************************************************************
      * Read File
      * -------------------------------------------
      * read_to_string returns a Result enum that needs to be handled
      * with match or unwrap
      *****************************************************************/
-    let file_content = fs::read_to_string(&file_name).expect("Could not read file to string");
-    println!("File Content:\n{}", &file_content);
+    let file_content = fs::read_to_string(&args.filename).expect("Could not read file to string")?;
+    println!("File Content:\n{}", &file_content)?;
+
+    OK(())
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -20,6 +20,17 @@ allows users to search for specific patterns within files or input streams.
 ## What I learned/problems I faced
 ---
 
+Case 2: Error handling in Rust
+    * Context: Error handling is much more complex in Rust than it is in other languages, and
+      there are specific error handling strategies which line up with different cases. Each
+      error handling strategy deserves special attention, and I ran into this complex system
+      right away.
+    * Error handling is done with the Result<Ok, Err> generic type. And the implementation of
+      this type differs on multiple factors. In this small program alone there were two
+      seperate implementations of error handling with Result<>.
+        * Handling in a situation where I expect an object return
+        * Handling in a siutation where there is no expected return
+
 Case 1: indexing vectors
     * Context: At the beginning of my program I wanted to make a struct
       type ArgsFormat that held the values of the program arguments
