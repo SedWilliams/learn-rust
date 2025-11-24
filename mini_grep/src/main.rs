@@ -20,12 +20,14 @@ struct ArgsFormatter {
 }
 
 //instantiate a struct populated with the command line arguments
-fn build_args(mut args: Vec<String>) -> ArgsFormatter {
-    ArgsFormatter {
-        //these are both one because the 0th index is the program name
-        //and when the previous arg is removed the next arg shifts to the previous index
-        filename: args.remove(1),
-        expression: args.remove(1),
+impl ArgsFormatter {
+    fn build_args(mut args: Vec<String>) -> ArgsFormatter {
+        ArgsFormatter {
+            //these are both one because the 0th index is the program name
+            //and when the previous arg is removed the next arg shifts to the previous index
+            filename: args.remove(1),
+            expression: args.remove(1),
+        }
     }
 }
 
@@ -39,7 +41,7 @@ fn main() {
      *****************************************************************/
     //returns a collection that will be mutated later which is why the function above accepts it as
     //mut
-    let args: ArgsFormatter = build_args(env::args().collect());
+    let args: ArgsFormatter = ArgsFormatter::build_args(env::args().collect());
     //dbg!(args.filename);
     //dbg!(args.expression);
     
