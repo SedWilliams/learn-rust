@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::process;
 use std::error::Error;
+use IO_test::search;
 
 //TODO update readme about what is held at the 0th index of args vector (its debug info)
 //TODO implement tuple struct instead
@@ -21,6 +22,7 @@ struct ArgsFormatter {
     expression: String,
 }
 
+
 //instantiate a struct populated with the command line arguments
 impl ArgsFormatter {
     fn build_args(mut args: Vec<String>) -> Result<ArgsFormatter, &'static str> {
@@ -33,8 +35,8 @@ impl ArgsFormatter {
             ArgsFormatter {
                 //these are both one because the 0th index is the program name
                 //and when the previous arg is removed the next arg shifts to the previous index
-                filename: args.remove(1),
                 expression: args.remove(1),
+                filename: args.remove(1),
             }
         )
     }
@@ -52,7 +54,8 @@ fn main() {
         println!("Problem parsing arguments: {err}");
         process::exit(1);
     });
-
+    
+    println!();
     println!("Reading from file: {}", &args.filename);
     println!("Searching for expression: {}", &args.expression);
     
@@ -74,10 +77,11 @@ fn run(args: &ArgsFormatter) -> Result<(), Box<dyn Error>> {
      * with match or unwrap
      *****************************************************************/
     let file_content = fs::read_to_string(&args.filename)?;
-    println!("File Content:\n{}", &file_content);
+    //println!("File Content:\n{}", &file_content);
+    
+    search(&args.expression, &file_content);
 
     Ok(())
-
 }
 
 
