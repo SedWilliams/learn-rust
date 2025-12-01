@@ -12,3 +12,10 @@ pub fn calculate_fahrenheight(temp_c: i64) -> i64 {
     println!("{} in celcius is {} in fahrenheight", temp_c, temp_f);
     temp_f
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+
+}
